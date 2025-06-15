@@ -35,6 +35,13 @@ model Donation {
   donorName String
   donorMessage String
   createdAt DateTime @default(now())
+  status    PaymentStatus @default(PENDING)
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }
  
 model Account {
