@@ -1,4 +1,14 @@
-export default function Me() {
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+export default async function Me() {
+
+  const session = await auth();
+  
+    if (!session?.user) {
+      redirect("/")
+    }
+
   return (
     <main className="w-full h-full flex gap-4 flex-col items-center p-4">
       <section
