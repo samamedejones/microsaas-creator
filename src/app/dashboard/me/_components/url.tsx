@@ -1,16 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { creatUsername } from "../_actions/create_username";
+import { useState } from "react";
 
 export function UrlPreview() {
+  const [error, setError] = useState<string | null>(null);
 
   async function submitAction(formData: FormData) {
     const username = formData.get("username") as string
+
     
     if(username === ""){
       return;
     }
     
-    console.log(username);
+    const response = await creatUsername( {username} )
+    console.log(response);
+
+    if (response.error) {
+      setError(response.error);
+    }
   }
 
   return (
@@ -36,6 +45,7 @@ export function UrlPreview() {
         >
           Salvar
         </Button>
+        {error && <p className="text-red-500">{error}</p>}
     </form>
     </div>
   );
