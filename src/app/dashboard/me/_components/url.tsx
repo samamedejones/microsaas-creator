@@ -3,8 +3,14 @@ import { Button } from "@/components/ui/button";
 import { creatUsername } from "../_actions/create_username";
 import { useState } from "react";
 
-export function UrlPreview() {
+
+interface UrlPreviewProps {
+  username: string | null;
+}
+
+export function UrlPreview({ username: slug }: UrlPreviewProps) {
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState(slug);
 
   async function submitAction(formData: FormData) {
     const username = formData.get("username") as string
@@ -21,6 +27,20 @@ export function UrlPreview() {
       setError(response.error);
     }
   }
+
+
+  if(!!username){
+    return (
+      <div className="flex items-center flex-1 p-2 text-gray-100">
+        <div className="flex items-center justify-center w-full">
+        <p>
+            {process.env.NEXT_PUBLIC_HOST_URL}/creator/{username}
+        </p>
+        </div>
+    </div>
+    );
+  }
+
 
   return (
     <div className="flex items-center flex-1 p-2 text-gray-100">
