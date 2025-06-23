@@ -1,8 +1,8 @@
 "use client";
 import { useState, ChangeEvent, useRef } from "react";
 import { debounce } from "lodash"
-import { ChangeName } from "../_actions/change-name";
 import { toast } from "sonner";
+import { ChangeDescription } from "../_actions/change-bio";
 
 
 
@@ -24,14 +24,14 @@ export function Description( {initialDescription}: { initialDescription: string 
 
             if(currentDescription !== description){
                 try {
-                    const response = await ChangeName({ name: currentDescription });
+                    const response = await ChangeDescription({ description: currentDescription });
 
                     if(response.error) {
                         toast.error(response.error);
                         setDescription(originalDescription);
                         return
                     }
-                    toast.success("Nome atualizado com sucesso!");
+                    toast.success("Bio atualizada com sucesso!");
                 } catch (err) {
                     console.log(err)
                     setDescription(originalDescription);
