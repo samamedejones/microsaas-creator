@@ -45,11 +45,11 @@ export default async function Apoia({
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 w-full mx-auto gap-4 max-w-5xl">
-        <section className="hidden md:flex flex-col bg-gray-50 p-5 rounded-md h-fit mx-2">
+        <section className="md:flex flex-col bg-gray-50 p-5 rounded-md h-fit mx-2">
           <p className="font-semibold text-lg">
-            {"Sobre " + user.name}
+             Sobre {user.name}
           </p>
-          <p className="text-gray-500 mt-2">
+          <p className="text-gray-500 mt-2 max-h-40 overflow-y-scroll  md:max-h-full md:overflow-hidden">
             {user.bio ?? "Este usuário não possui uma biografia definida."}
           </p>
         </section>
@@ -58,7 +58,7 @@ export default async function Apoia({
           className="bg-gray-50 rounded-md p-5 h-fit mx-2"
         >
           <h3 className="font-semibold text-lg">
-            Apoie o Matheus Fraga:
+            {user.name ? `Apoiar ${user.name}` : "Apoiar criador"}
           </h3>
 
 
