@@ -2,6 +2,7 @@
 import { useState, ChangeEvent, useRef } from "react";
 import { debounce } from "lodash"
 import { ChangeName } from "../_actions/change-name";
+import { toast } from "sonner";
 
 
 
@@ -23,18 +24,27 @@ export function Name( {initialName}: { initialName: string }) {
 
             if(currentName !== name){
                 try {
-                    // Vamos tentar salvar o nome do user no banco de dados
+                    const response = await ChangeName({ name: currentName });
+
+                    if(response.error) {
+                        toast.error(response.error);
+                        setName(originalName);
+                        return
+                    }
+                    toast.success("Nome atualizado com sucesso!");
                 } catch (err) {
                     console.log(err)
                     setName(originalName);
                 }
             }
         }, 500)
-    )
+    ).current
 
     function handleChangeName(event: ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
         setName(value);
+
+        debouncedSaveName(value);
     }
 
 
