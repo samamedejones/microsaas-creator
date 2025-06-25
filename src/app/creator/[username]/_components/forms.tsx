@@ -20,7 +20,12 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
-export function FormDonate(){
+ interface FormDonateProps {
+    creatorId: string;
+    slug: string;
+  }
+
+export function FormDonate({ creatorId, slug }: FormDonateProps) {
 
     const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -33,12 +38,14 @@ export function FormDonate(){
  
   async function onSubmit(data: FormData) {
 
+    const priceInCents = Number(data.price) * 100;
+
     const checkout = await CreatePayment({
       name: data.name,
       message: data.message,
-      creatorId: "",
-      slug: "", 
-      price: Number(data.price),
+      creatorId: creatorId,
+      slug: slug , 
+      price: priceInCents
     })
     
     console.log(checkout)
