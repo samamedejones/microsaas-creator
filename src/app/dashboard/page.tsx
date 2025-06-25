@@ -34,6 +34,12 @@ export default async function Dashboard() {
         </div>
       </section>
 
+      {!session.user.connectedStripeAccountId && (
+        <div>
+          
+        </div>
+      )}
+
       <Stats />
 
 
