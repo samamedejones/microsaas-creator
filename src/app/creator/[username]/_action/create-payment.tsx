@@ -7,7 +7,7 @@ const createPaymentSchema = z.object({
     slug: z.string().min(1, "A slug do criador é obrigatório"),
     name: z.string().min(1, "O name precisa ser preenchido"),
     message: z.string().min(1, "A mensagem é obrigatória"),
-    price: z.number().min(10, "Selecionar um valor maior que 10"),
+    price: z.number().min(1500, "O valor mínimo é R$15,00"),
     creatorId: z.string()
 });
 
@@ -27,7 +27,11 @@ export async function CreatePayment(data: CreatePaymentSchema) {
 
     try {
         
-        console.log(data);
+        const creator = await prisma.user.findUnique({
+            where: {
+                id: data.creatorId
+            }
+        })
 
     } catch (err) {
         return {
@@ -35,10 +39,4 @@ export async function CreatePayment(data: CreatePaymentSchema) {
             err: "Falha ao criar pagamento, tente novamente mais tarde."
         }
     }
-
-    return (
-        <div>
-
-        </div>
-    )
 }
