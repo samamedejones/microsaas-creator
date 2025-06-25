@@ -33,6 +33,13 @@ export async function CreatePayment(data: CreatePaymentSchema) {
             }
         })
 
+        if(!creator){
+            return {
+            data: null,
+            err: "Falha ao criar pagamento, tente novamente mais tarde."
+        }
+        }
+
     } catch (err) {
         return {
             data: null,
