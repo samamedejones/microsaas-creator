@@ -3,6 +3,7 @@ import { Stats } from "./_components/analytics";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getLoginOnbordAccounts } from "./_data-acess/create-onbord-accounts";
+import { CreateAccountButton } from "./_components/create-account-button";
 
 
 
@@ -36,7 +37,7 @@ export default async function Dashboard() {
 
       {!session.user.connectedStripeAccountId && (
         <div>
-          
+          <CreateAccountButton/>
         </div>
       )}
 
