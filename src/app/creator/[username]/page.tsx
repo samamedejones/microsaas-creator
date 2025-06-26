@@ -16,6 +16,8 @@ export default async function Apoia({
     notFound();
    }
 
+   console.log("teste")
+
   return (
     <div className=" min-h-[calc(100vh-64px)]">
       <div className="w-full h-64 relative bg-black">
@@ -62,7 +64,7 @@ export default async function Apoia({
             {user.name ? `Apoiar ${user.name}` : "Apoiar criador"}
           </h3>
 
-          <FormDonate slug={user.username!} creatorId={user.id}/>
+          <FormDonate slug={user.username!} creatorId={user.connectedStripeAccountId ?? ""}/>
 
         </section>
       </div>

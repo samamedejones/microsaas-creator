@@ -30,10 +30,10 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
     const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    name: "",
-    message: "",
-    price: "5"
-    },
+      name: "",
+      message: "",
+      price: "5"
+      },
   })
  
   async function onSubmit(data: FormData) {
