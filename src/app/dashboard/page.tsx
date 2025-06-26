@@ -16,7 +16,7 @@ export default async function Dashboard() {
   }
 
   const accountUrl = await getLoginOnbordAccounts(session.user.connectedStripeAccountId)
-  console.log(accountUrl)
+  console.log("teste123", accountUrl)
 
   return (
     <div className="p-4">

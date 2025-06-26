@@ -16,6 +16,9 @@ export async function getLoginOnbordAccounts(accountId: string | undefined) {
         return_url: `${process.env.HOST_URL}/dashboard`,
         type: 'account_onboarding'
     })
+
+    return accountLink.url
+
     } catch (err) {
        console.log( "## ERRO ACCOUNT ID", err) 
     }

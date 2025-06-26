@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function CreateAccountButton(){
 
@@ -10,7 +11,30 @@ export function CreateAccountButton(){
     async function handleCreateStripeAccount() {
         setLoading(true)
 
-        //logica para o banco de dados
+        try {
+            
+            const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/stripe/create-account`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application.json"
+                }
+            })
+
+
+            const data = await res.json()
+
+            if(!res.ok){
+                toast.error("Falha ao criar conta de pagamento")
+                setLoading(false)
+                return
+            }
+
+            window.location.href = data.url
+
+        } catch (err) {
+            console.log(err)
+            setLoading(false)
+        }
     }
 
     return (
