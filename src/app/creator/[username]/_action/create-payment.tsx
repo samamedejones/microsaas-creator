@@ -1,6 +1,7 @@
 "use server"
 
 import { prisma } from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
 import { z } from "zod"; 
 
 const createPaymentSchema = z.object({
@@ -36,20 +37,24 @@ export async function CreatePayment(data: CreatePaymentSchema) {
 
     try {
         
+        console.log("chegou aq")
         const creator = await prisma.user.findFirst({
             where: {
                 connectedStripeAccountId: data.creatorId
             }
         })
 
+        
+
         if(!creator){
             return {
             data: null,
-            err: "Falha ao criar pagamento, tente novamente mais tarde"
+            error: "Falha ao criar pagamento, tente novamente mais tarde. 1"
             }
         }
 
-        const aplicationFeeAmount = Math.floor(data.price * 0.1)
+
+        const applicationFeeAmount = Math.floor(data.price * 0.1)
 
         const donation = await prisma.donation.create({
             data: {
@@ -57,16 +62,56 @@ export async function CreatePayment(data: CreatePaymentSchema) {
                 donorMessage: data.message,
                 userId: creator.id,
                 status: "PENDING",
-                amount: (data.price - aplicationFeeAmount)
+                amount: (data.price - applicationFeeAmount)
             }
         })
+
+        console.log(creator)
+
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment",
+            success_url: `${process.env.HOST_URL}/creator/${data.slug}`,
+            cancel_url: `${process.env.HOST_URL}/creator/${data.slug}`,
+            line_items: [
+                {
+                    price_data: {
+                        currency: "brl",
+                        product_data: {
+                            name: "Apoiar " + creator.name
+                        },
+                    unit_amount: data.price,
+                    },
+                    quantity: 1
+                }
+            ],
+            payment_intent_data: {
+                application_fee_amount: applicationFeeAmount,
+                transfer_data: {
+                    destination: creator.connectedStripeAccountId as string
+                },
+                metadata: {
+                    donorName: data.name,
+                    donorMessage: data.message,
+                    donationId: donation.id
+                }    
+            }   
+        })
+
+        console.log("to testando aq", session)
+
+        return {
+            data: JSON.stringify(session),
+            error: null
+        }
 
          
 
     } catch (err) {
         return {
             data: null,
-            err: "Falha ao criar pagamento, tente novamente mais tarde."
+            error: "Falha ao criar pagamento, tente novamente mais tarde.2"
         }
     }
 }
