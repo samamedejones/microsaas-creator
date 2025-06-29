@@ -129,7 +129,9 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
             </FormItem>
           )}
         />
-        <Button type="submit">Fazer doação</Button>
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Carregando..." : "Fazer doação"}
+          </Button>
       </form>
     </Form>
     )
