@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { CreatePayment } from "../_action/create-payment"
 import { toast } from "sonner"
+import { getStripeJs } from "@/lib/stripe-js"
  
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -53,6 +54,17 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
       toast.error(checkout.error)
       return
     }
+
+    if(checkout.data){
+      const data = JSON.parse(checkout.data)
+      
+      const stripe = await getStripeJs()
+
+      await stripe?.redirectToCheckout({
+        sessionId: data.id as string
+      })
+    }
+
 
     
   }
