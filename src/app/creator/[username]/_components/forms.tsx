@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { CreatePayment } from "../_action/create-payment"
+import { toast } from "sonner"
  
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -48,7 +49,12 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
       price: priceInCents
     })
     
-    console.log(checkout)
+    if(checkout.error){
+      toast.error(checkout.error)
+      return
+    }
+
+    
   }
 
     return (
