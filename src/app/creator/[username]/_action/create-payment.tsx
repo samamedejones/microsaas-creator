@@ -21,14 +21,12 @@ export async function CreatePayment(data: CreatePaymentSchema) {
 
     if (!schema.success) {
         return {
-            data: null,
             error: schema.error.errors[0].message
         }
     }
 
     if(!data.creatorId){
          return {
-            data: null,
             error: "Creator não encontrado"
     }
 }
@@ -102,15 +100,13 @@ export async function CreatePayment(data: CreatePaymentSchema) {
         console.log("to testando aq", session)
 
         return {
-            data: JSON.stringify(session),
-            error: null
+            sessionId: session.id
         }
 
          
 
     } catch (err) {
         return {
-            data: null,
             error: "Falha ao criar pagamento, tente novamente mais tarde.2"
         }
     }
