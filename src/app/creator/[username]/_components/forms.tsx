@@ -49,6 +49,8 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
       slug: slug , 
       price: priceInCents
     })
+
+    await handlePaymentResponse(checkout)
     
   }
   
@@ -65,6 +67,11 @@ export function FormDonate({ creatorId, slug }: FormDonateProps) {
     }
 
     const stripe  = await getStripeJs()
+
+    if(!stripe) {
+      toast.error("Falha ao criar pagamnento, tente mais tarde.")
+      return
+    }
 
     await stripe?.redirectToCheckout({
       sessionId: checkout.sessionId 
